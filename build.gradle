@@ -1,0 +1,32 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.0.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'com.sartika'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation('org.postgresql:postgresql')
+	implementation 'org.jsoup:jsoup:1.7.2'
+	implementation 'com.googlecode.json-simple:json-simple:1.1'
+	//implementation 'com.fasterxml.jackson.core:jackson-databind:2.7.5'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.0'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
