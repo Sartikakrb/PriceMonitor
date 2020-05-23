@@ -1,0 +1,40 @@
+create database price_monitor_db;
+ 
+create user [CLIENT NAME];
+alter user client with encrypted password [PASSWORD];
+grant all privileges on database price_monitor_db to [CLIENT NAME];
+
+
+create sequence product_id_seq;
+grant all privileges on SEQUENCE product_id_seq to [CLIENT NAME];
+
+create sequence product_price_id_seq;
+grant all privileges on SEQUENCE product_price_id_seq to [CLIENT NAME];
+
+
+create table product (
+id bigint not null default nextval('product_id_seq') PRIMARY KEY,
+name varchar(255),
+description varchar(255),
+images varchar(255),
+current_price bigint,
+url varchar(255), created_time timestamp with time zone);
+
+grant all privileges on table product to [CLIENT NAME];
+
+
+
+create table product_price (                                                                
+ id bigint not null default nextval('product_price_id_seq') PRIMARY KEY,                                          
+product_id bigint,                                                                                               
+price bigint,                                                                                                    
+created_time timestamp with time zone);
+
+grant all privileges on table product_price to [CLIENT NAME];;
+
+
+alter table product_price add constraint fk_product_prices foreign key (product_id) references product(id);
+
+
+
+

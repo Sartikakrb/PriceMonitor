@@ -13,8 +13,7 @@ public class PriceScheduler {
     @Autowired
     private ProductService productService;
 
-    //@Scheduled(cron = "* * 0/1 * * *")
-    @Scheduled(cron = "0/10 * * * * *")
+    @Scheduled(cron = "* * 0/1 * * *")
     public void priceCrawl() {
         System.out.println("Excecuting crawling....");
         List<Product> list = productService.findAll();
