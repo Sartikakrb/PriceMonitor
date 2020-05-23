@@ -25,9 +25,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addProduct(String url) {
-        //Product prod = new Product("Kursi", "Kursi desc","image1;image2", 1000l, "http://localhost.com:8080/blabla");
-
-        Product newCrawlProduct = buildProductFromUrl(url);
+        Product newCrawlProduct = buildAllProductAttrFromUrl(url);
         Product existingProduct = productRepository.findOneByName(newCrawlProduct.getName());
 
         if(existingProduct != null) {
@@ -41,10 +39,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private Product buildProductFromUrl(String url) {
-        System.out.println("Constructing product model from url...."); // later delete
-        //String example = "https://fabelio.com/ip/kursi-vienna-new.html";
-
+    private Product buildAllProductAttrFromUrl(String url) {
+        System.out.println("Constructing product model from url....");
         Product product = new Product();
 
         if(isPageCrawlable(url)) {
@@ -59,6 +55,20 @@ public class ProductServiceImpl implements ProductService {
            } catch (Exception e) {
                System.out.println("An error occured when crawl each attribute product ");
            }
+        }
+        return product;
+    }
+
+    private Product buildPriceProductAttrFromUrl(String url) {
+        Product product = new Product();
+
+        if(isPageCrawlable(url)) {
+            try {
+                Document document = Jsoup.connect(url).userAgent("Chrome").timeout(60 * 1000).get();
+                product.setCurrent_price(Long.parseLong(parseProductPrice(document)));
+            } catch (Exception e) {
+                System.out.println("An error occured when crawl each attribute product ");
+            }
         }
         return product;
     }
@@ -144,5 +154,15 @@ public class ProductServiceImpl implements ProductService {
     public Product findOneById(Long id) {
         Product product = productRepository.findOneById(id);
         return product;
+    }
+
+    @Override
+    public void editProduct(String url) {
+        Product newCrawlProduct = buildPriceProductAttrFromUrl(url);
+        Product existingProduct = productRepository.findOneByName(newCrawlProduct.getName());
+
+        productRepository.updateCurrentPrice(newCrawlProduct.getCurrent_price(), existingProduct.getName());
+        productPriceRepository.addProductPrice(new ProductPrice(existingProduct.getId(),
+                newCrawlProduct.getCurrent_price()));
     }
 }

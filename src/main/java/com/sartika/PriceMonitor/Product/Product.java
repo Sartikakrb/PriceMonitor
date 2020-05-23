@@ -10,6 +10,7 @@ public class Product {
     private String images;
     private Long current_price;
     private String url;
+    private Timestamp created_time;
 
     public Product() {
     }
@@ -68,6 +69,14 @@ public class Product {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Timestamp getCreated_time() {
+        return this.created_time;
+    }
+
+    public void setCreated_time(Timestamp created_time) {
+        this.created_time = created_time;
     }
 
 }
